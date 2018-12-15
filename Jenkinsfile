@@ -56,11 +56,53 @@ spec:
 
                 slackSend message:"${feSvcName} Build started ${env.BUILD_NUMBER}"
 
+                try{
+                    sh "rm -r *"
+                } catch (error){
+                    throw error
+                }
+
+            }
+        }
+
+        stage("Checking Out Code") {
+            steps{
+
+                checkout changelog: false,
+                         poll: true,
+                         scm: [$class: "GitSCM",
+                         branches: [[name: "*/master"]],
+                         extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: 'src/icedo/sandbox']],
+                         userRemoteConfigs: [[credentialsId: "source:britzc-devops",
+                                              url: "https://source.developers.google.com/p/britzc-devops/r/icedocode"]]]
+
+
+            }
+        }
+
+        stage("Getting Dependancies") {
+            steps{
+
                 container('golang'){
                     script{
                         try{
-                            sh "mkdir src"
-                            sh "cp -r * src/."
+                            sh "go get github.com/nats-io/go-nats"
+                        } catch (error){
+                            throw error
+                        }
+                    }
+                }
+
+            }
+        }
+
+        stage("Checking Out Code") {
+            steps{
+
+                container('golang'){
+                    script{
+                        try{
+                            sh "rm -r *"
                             sh "go get github.com/nats-io/go-nats"
                         } catch (error){
                             throw error
