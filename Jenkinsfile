@@ -48,6 +48,7 @@ spec:
 
     environment {
         GOPATH = '/home/jenkins/workspace/icedo-app_${env.BRANCH}'
+        APPPATH = '/home/jenkkns/workspace/icedo-app_${env.BRANCH}/src/icedo/sandbox'
     }
 
     stages {
@@ -74,7 +75,7 @@ spec:
                          poll: true,
                          scm: [$class: "GitSCM",
                          branches: [[name: "*/master"]],
-                         extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: 'src/icedo/sandbox']],
+                         extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: '${APPPATH}']],
                          userRemoteConfigs: [[credentialsId: "source:britzc-devops",
                                               url: "https://source.developers.google.com/p/britzc-devops/r/icedocode"]]]
 
@@ -86,11 +87,13 @@ spec:
             steps{
 
                 container('golang'){
-                    script{
-                        try{
-                            sh "go get github.com/nats-io/go-nats"
-                        } catch (error){
-                            throw error
+                    dir('${GOPATH}'){
+                        script{
+                            try{
+                                sh "go get github.com/nats-io/go-nats"
+                            } catch (error){
+                                throw error
+                            }
                         }
                     }
                 }
@@ -102,12 +105,14 @@ spec:
             steps{
 
                 container('golang'){
-                    script{
-                        try{
-                            sh "go test ./... -tags unit_test"
-                        } catch (error){
-                            slackSend message:"${feSvcName} Unit testing failed ${env.BUILD_NUMBER}"
-                            throw error
+                    dir('${APPPATH}'){
+                        script{
+                            try{
+                                sh "go test ./... -tags unit_test"
+                            } catch (error){
+                                slackSend message:"${feSvcName} Unit testing failed ${env.BUILD_NUMBER}"
+                                throw error
+                            }
                         }
                     }
                 }
@@ -119,12 +124,14 @@ spec:
             steps{
 
                 container('golang'){
-                    script{
-                        try{
-                            sh "go test ./... -tags integration_test"
-                        } catch (error){
-                            slackSend message:"${feSvcName} Integration testing failed ${env.BUILD_NUMBER}"
-                            throw error
+                    dir('${APPPATH}'){
+                        script{
+                            try{
+                                sh "go test ./... -tags integration_test"
+                            } catch (error){
+                                slackSend message:"${feSvcName} Integration testing failed ${env.BUILD_NUMBER}"
+                                throw error
+                            }
                         }
                     }
                 }
@@ -136,12 +143,14 @@ spec:
             steps{
 
                 container('golang'){
-                    script{
-                        try{
-                            sh "GOOS=linux go build -o icedoapp"
-                        } catch (error){
-                            slackSend message:"${feSvcName} Compile binary failed ${env.BUILD_NUMBER}"
-                            throw error
+                    dir('${APPPATH}'){
+                        script{
+                            try{
+                                sh "GOOS=linux go build -o icedoapp"
+                            } catch (error){
+                                slackSend message:"${feSvcName} Compile binary failed ${env.BUILD_NUMBER}"
+                                throw error
+                            }
                         }
                     }
                 }
