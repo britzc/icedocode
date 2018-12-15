@@ -47,7 +47,7 @@ spec:
     }
 
     environment {
-        GOPATH = '/home/jenkins/workspace/icedo-app_${env.BRANCH}'
+        GOPATH = "/home/jenkins/workspace/icedo-app_${env.BRANCH}"
         APPPATH = 'src/icedo/sandbox'
     }
 
@@ -59,6 +59,7 @@ spec:
 
                 script{
                     try{
+                        sh "echo $GOPATH"
                         sh "rm -r *"
                     } catch (error){
                         throw error
