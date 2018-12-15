@@ -163,7 +163,7 @@ spec:
             steps {
 
                 container('gcloud') {
-                    dir("${env.APPPATH}"){
+                    dir("src/icedo/sandbox"){
                         sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${imageTag} ."
                     }
                 }
@@ -178,13 +178,15 @@ spec:
                 slackSend message:"${feSvcName} canary deployment started"
 
                 container('kubectl') {
-                    sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
+                    dir("src/icedo/sandbox"){
+                        sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
 
-                    sh("kubectl --namespace=production apply -f k8s/quota/")
-                    sh("kubectl --namespace=production apply -f k8s/services/")
-                    sh("kubectl --namespace=production apply -f k8s/canary/")
+                        sh("kubectl --namespace=production apply -f k8s/quota/")
+                        sh("kubectl --namespace=production apply -f k8s/services/")
+                        sh("kubectl --namespace=production apply -f k8s/canary/")
 
-                    sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+                        sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+                    }
                 } 
 
                 slackSend message:"${feSvcName} canary deployment completed"
@@ -199,13 +201,15 @@ spec:
                 slackSend message:"${feSvcName} production deployment started"
 
                 container('kubectl') {
-                    sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/production/*.yaml")
+                    dir("src/icedo/sandbox"){
+                        sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/production/*.yaml")
 
-                    sh("kubectl --namespace=production apply -f k8s/quota/")
-                    sh("kubectl --namespace=production apply -f k8s/services/")
-                    sh("kubectl --namespace=production apply -f k8s/production/")
+                        sh("kubectl --namespace=production apply -f k8s/quota/")
+                        sh("kubectl --namespace=production apply -f k8s/services/")
+                        sh("kubectl --namespace=production apply -f k8s/production/")
 
-                    sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+                        sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+                    }
                 }
 
                 slackSend message:"${feSvcName} production deployment completed"
@@ -221,17 +225,19 @@ spec:
                 slackSend message:"${feSvcName} ${env.BRANCH_NAME} deployment started"
 
                 container('kubectl') {
-                    sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
+                    dir("src/icedo/sandbox"){
+                        sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
 
-                    sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
-                    sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/dev/*.yaml")
+                        sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
+                        sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/dev/*.yaml")
 
-                    sh("kubectl --namespace=production apply -f k8s/quota/")
-                    sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
-                    sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
+                        sh("kubectl --namespace=production apply -f k8s/quota/")
+                        sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
+                        sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
 
-                    echo 'To access your environment run `kubectl proxy`'
-                    echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
+                        echo 'To access your environment run `kubectl proxy`'
+                        echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
+                    }
                 }
 
                 slackSend message:"${feSvcName} ${env.BRANCH_NAME} deployment completed"
