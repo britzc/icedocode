@@ -1,5 +1,5 @@
 FROM alpine
 
-COPY icedoapp /
+COPY icedoapp .
 
 CMD ["icedoapp"]
