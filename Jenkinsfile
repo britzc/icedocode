@@ -56,10 +56,12 @@ spec:
 
                 slackSend message:"${feSvcName} Build started ${env.BUILD_NUMBER}"
 
-                try{
-                    sh "rm -r *"
-                } catch (error){
-                    throw error
+                script{
+                    try{
+                        sh "rm -r *"
+                    } catch (error){
+                        throw error
+                    }
                 }
 
             }
