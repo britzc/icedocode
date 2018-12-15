@@ -98,23 +98,6 @@ spec:
             }
         }
 
-        stage("Getting Dependancies") {
-            steps{
-
-                container('golang'){
-                    script{
-                        try{
-                            sh "rm -r *"
-                            sh "go get github.com/nats-io/go-nats"
-                        } catch (error){
-                            throw error
-                        }
-                    }
-                }
-
-            }
-        }
-
         stage("Unit Testing") {
             steps{
 
