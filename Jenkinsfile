@@ -55,7 +55,9 @@ spec:
                 container('golang'){
                     script{
                         try{
+                            sh "ls"
                             sh "go get github.com/nats-io/go-nats"
+                            sh "copy . src/."
                         } catch (error){
                             throw error
                         }

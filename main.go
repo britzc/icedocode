@@ -14,6 +14,7 @@ var (
 	tmpl = template.Must(template.ParseFiles("index.html"))
 )
 
+// PageData provides version details
 type PageData struct {
 	Version string
 }
