@@ -57,6 +57,7 @@ spec:
                         try{
                             sh "pwd"
                             sh "ls"
+                            sh "echo $GOPATH"
                             sh "go get github.com/nats-io/go-nats"
                         } catch (error){
                             throw error
