@@ -6,6 +6,6 @@ spec:
   hard:
     memory: 2Gi
     cpu: 2
-    pods: 8
+    pods: 15 
     services: 8
     resourcequotas: 1
