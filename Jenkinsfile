@@ -50,6 +50,8 @@ spec:
 
         stage("Compile Binary") {
             steps{
+                slackSend message:"Build Started ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+
                 container('golang'){
 
                         script{
