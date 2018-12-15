@@ -249,7 +249,6 @@ spec:
     post {
         always {
             echo "One way or another, I have finished"
-            deleteDir()
         }
         success {
             slackSend message:"${feSvcName} Build successful ${env.BUILD_NUMBER}"
