@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-const version string = "1.0.1"
+const version string = "2.0.1"
 
 func main() {
 	var port int
