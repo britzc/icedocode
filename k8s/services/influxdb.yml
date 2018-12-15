@@ -16,6 +16,9 @@ spec:
       containers:
       - name: influxdb
         image: influxdb 
+        env:
+        - name: INFLUXDB_ADMIN_ENABLED
+          value: "true"
         resources:
           limits:
             memory: "500Mi"
