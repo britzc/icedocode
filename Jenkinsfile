@@ -46,6 +46,10 @@ spec:
         }
     }
 
+    environment {
+        GOPATH = '/home/jenkins/workspace/icedo-app_${env.BRANCH}'
+    }
+
     stages {
         stage("Setting Up") {
             steps{
@@ -55,8 +59,8 @@ spec:
                 container('golang'){
                     script{
                         try{
-                            sh "GOPATH = 'pwd'"
-                            sh "echo $GOPATH"
+                            sh "mkdir src"
+                            sh "cp -r * src/."
                             sh "go get github.com/nats-io/go-nats"
                         } catch (error){
                             throw error
