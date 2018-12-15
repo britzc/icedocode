@@ -54,13 +54,13 @@ spec:
 
                 container('golang'){
                     script{
-                        try{
-                            sh "$SRC_DIR"
-                            sh "ls"
-                            sh "go get github.com/nats-io/go-nats"
-                            sh "mv . ../src/."
-                        } catch (error){
-                            throw error
+                        dir("$GOPATH"){
+                            try{
+                                sh "ls"
+                                sh "go get github.com/nats-io/go-nats"
+                            } catch (error){
+                                throw error
+                            }
                         }
                     }
                 }
