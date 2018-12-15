@@ -3,7 +3,7 @@ apiVersion: extensions/v1beta1
 metadata:
   name: icedoapp-frontend-canary
 spec:
-  replicas:
+  replicas: 1
   template:
     metadata:
       name: frontend
