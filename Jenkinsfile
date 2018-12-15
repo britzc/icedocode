@@ -98,7 +98,7 @@ spec:
             }
         }
 
-        stage("Checking Out Code") {
+        stage("Getting Dependancies") {
             steps{
 
                 container('golang'){
