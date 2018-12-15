@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: influxdb-frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 8086
+    targetPort: 8086
+    protocol: TCP
+  selector:
+    app: influxdb
+    role: service
+
