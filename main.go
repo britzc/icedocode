@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-const version string = "3.0.1"
+const version string = "4.0.1"
 
 var (
 	tmpl = template.Must(template.ParseFiles("index.html"))
