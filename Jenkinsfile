@@ -54,13 +54,12 @@ spec:
 
                 container('golang'){
                     script{
-                        dir("/go"){
-                            try{
-                                sh "ls"
-                                sh "go get github.com/nats-io/go-nats"
-                            } catch (error){
-                                throw error
-                            }
+                        try{
+                            sh "pwd"
+                            sh "ls"
+                            sh "go get github.com/nats-io/go-nats"
+                        } catch (error){
+                            throw error
                         }
                     }
                 }
