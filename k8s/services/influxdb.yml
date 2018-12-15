@@ -18,7 +18,7 @@ spec:
         image: influxdb 
         env:
         - name: INFLUXDB_ADMIN_ENABLED
-          value: true
+          value: false
         resources:
           limits:
             memory: "500Mi"
