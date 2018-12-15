@@ -36,6 +36,10 @@ func main() {
 		tmpl.Execute(w, data)
 	})
 
+	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, version)
+	})
+
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
