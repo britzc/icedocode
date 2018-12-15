@@ -55,8 +55,7 @@ spec:
                 container('golang'){
                     script{
                         try{
-                            sh "pwd"
-                            sh "ls"
+                            sh "SET GOPATH = $(pwd)"
                             sh "echo $GOPATH"
                             sh "go get github.com/nats-io/go-nats"
                         } catch (error){
