@@ -5,13 +5,9 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - name: traffic
+  - name: http
     port: 8086
     targetPort: 8086
-    protocol: TCP
-  - name: ui
-    port: 8083
-    targetPort: 8083
     protocol: TCP
   selector:
     app: influxdb
