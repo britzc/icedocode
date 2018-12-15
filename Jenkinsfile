@@ -54,10 +54,7 @@ spec:
 
                         script{
                             try{
-                                sh "GOOS=linux go build -o icedoapp"
-                                //sh "mkdir -p /opt/app/shared/${env.BUILD_NUMBER}"
-                                //sh "mv icedoapp /opt/app/shared/${env.BUILD_NUMBER}/."
-                                //sh "mv Dockerfile /opt/app/shared/${env.BUILD_NUMBER}/."
+                                sh "CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o icedoapp"
                             } catch (error){
                                 throw error
                             }

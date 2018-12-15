@@ -1,3 +1,3 @@
-FROM golang:1.10
-
-COPY icedoapp .
+FROM scratch
+ADD icedoapp .
+CMD ["/icedoapp"]
