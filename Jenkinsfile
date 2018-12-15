@@ -54,7 +54,7 @@ spec:
 
                         script{
                             try{
-                                sh "CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o icedoapp"
+                                sh "GOOS=linux go build -o icedoapp"
                             } catch (error){
                                 throw error
                             }
