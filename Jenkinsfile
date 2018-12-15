@@ -64,7 +64,8 @@ spec:
 
             }
         }
-        stage("Execute Unit Tests") {
+
+        stage("Unit Testing") {
             steps{
 
                 container('golang'){
@@ -72,6 +73,24 @@ spec:
                         try{
                             sh "go test -tags unit_test"
                         } catch (error){
+                            slackSend message:"${feSvcName} Unit testing failed ${env.BUILD_NUMBER}"
+                            throw error
+                        }
+                    }
+                }
+
+            }
+        }
+
+        stage("Integration Testing") {
+            steps{
+
+                container('golang'){
+                    script{
+                        try{
+                            sh "go test -tags integration_test"
+                        } catch (error){
+                            slackSend message:"${feSvcName} Integration testing failed ${env.BUILD_NUMBER}"
                             throw error
                         }
                     }
@@ -88,12 +107,11 @@ spec:
                         try{
                             sh "GOOS=linux go build -o icedoapp"
                         } catch (error){
+                            slackSend message:"${feSvcName} Compile binary failed ${env.BUILD_NUMBER}"
                             throw error
                         }
                     }
                 }
-
-                slackSend message:"${feSvcName} Build started ${env.BUILD_NUMBER}"
 
             }
         }
