@@ -54,7 +54,7 @@ spec:
 
                 container('golang'){
                     script{
-                        dir("$GOPATH"){
+                        dir("/go"){
                             try{
                                 sh "ls"
                                 sh "go get github.com/nats-io/go-nats"
