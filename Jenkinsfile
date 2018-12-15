@@ -7,7 +7,7 @@ def imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMB
 pipeline {
   agent {
     kubernetes {
-      label 'icedoapp'
+      label 'icedo-app'
       defaultContainer 'jnlp'
       yaml """
 apiVersion: v1
