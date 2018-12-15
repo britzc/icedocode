@@ -48,7 +48,7 @@ spec:
 
     environment {
         GOPATH = '/home/jenkins/workspace/icedo-app_${env.BRANCH}'
-        APPPATH = '/home/jenkkns/workspace/icedo-app_${env.BRANCH}/src/icedo/sandbox'
+        APPPATH = 'src/icedo/sandbox'
     }
 
     stages {
@@ -75,7 +75,7 @@ spec:
                          poll: true,
                          scm: [$class: "GitSCM",
                          branches: [[name: "*/master"]],
-                         extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: "${env.APPPATH}"]],
+                         extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: "src/icedo/sandbox"]],
                          userRemoteConfigs: [[credentialsId: "source:britzc-devops",
                                               url: "https://source.developers.google.com/p/britzc-devops/r/icedocode"]]]
 
@@ -105,7 +105,7 @@ spec:
             steps{
 
                 container('golang'){
-                    dir("${env.APPPATH}"){
+                    dir("src/icedo/sandbox"){
                         script{
                             try{
                                 sh "go test ./... -tags unit_test"
@@ -124,7 +124,7 @@ spec:
             steps{
 
                 container('golang'){
-                    dir("${env.APPPATH}"){
+                    dir("src/icedo/sandbox"){
                         script{
                             try{
                                 sh "go test ./... -tags integration_test"
@@ -143,7 +143,7 @@ spec:
             steps{
 
                 container('golang'){
-                    dir("${env.APPPATH}"){
+                    dir("src/icedo/sandbox"){
                         script{
                             try{
                                 sh "GOOS=linux go build -o icedoapp"
