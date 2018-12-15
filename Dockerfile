@@ -2,4 +2,4 @@ FROM alpine
 
 COPY icedoapp /
 
-CMD ["/icedoapp"]
+CMD ["icedoapp"]
