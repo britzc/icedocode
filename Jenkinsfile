@@ -88,7 +88,7 @@ spec:
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
           sh("kubectl --namespace=production apply -f k8s/services/")
           sh("kubectl --namespace=production apply -f k8s/canary/")
-          sh("echo http://`kubectl --namespace=production get service/${svcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+          sh("echo http://`kubectl --namespace=production get service/${svcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${svcName}")
         } 
       }
     }
@@ -101,7 +101,7 @@ spec:
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/production/*.yaml")
           sh("kubectl --namespace=production apply -f k8s/services/")
           sh("kubectl --namespace=production apply -f k8s/production/")
-          sh("echo http://`kubectl --namespace=production get service/${svcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+          sh("echo http://`kubectl --namespace=production get service/${svcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${svcName}")
         }
       }
     }
