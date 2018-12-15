@@ -22,6 +22,9 @@ func main() {
 	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s\n", version)
 	})
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", port), nil))
 

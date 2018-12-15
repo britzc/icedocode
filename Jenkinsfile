@@ -1,6 +1,6 @@
 def project = 'britzc-devops'
 def appName = 'icedoapp'
-def svcName = "${appName}"
+def feSvcName = "${appName}"
 def imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
 pipeline {
@@ -88,7 +88,7 @@ spec:
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
           sh("kubectl --namespace=production apply -f k8s/services/")
           sh("kubectl --namespace=production apply -f k8s/canary/")
-          sh("echo http://`kubectl --namespace=production get service/${svcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${svcName}")
+          sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
         } 
       }
     }
@@ -101,7 +101,7 @@ spec:
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/production/*.yaml")
           sh("kubectl --namespace=production apply -f k8s/services/")
           sh("kubectl --namespace=production apply -f k8s/production/")
-          sh("echo http://`kubectl --namespace=production get service/${svcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${svcName}")
+          sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
         }
       }
     }
@@ -121,7 +121,7 @@ spec:
           sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
           sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
           echo 'To access your environment run `kubectl proxy`'
-          echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${svcName}:80/"
+          echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
         }
       }     
     }
@@ -132,7 +132,6 @@ post {
     always {
         echo "One way or another, I have finished"
             deleteDir()
-            // step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'grafana'])
     }
     success {
         echo "I succeeeded!"
