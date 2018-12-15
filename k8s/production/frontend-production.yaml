@@ -24,7 +24,7 @@ spec:
           httpGet:
             path: /healthz
             port: 80
-        command: ["sh", "-c", "./icedoapp -p=80"]
+        command: ["sh", "-c", "./icedoapp -port=80"]
         ports:
         - name: frontend
           containerPort: 80
