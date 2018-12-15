@@ -75,7 +75,7 @@ spec:
                          poll: true,
                          scm: [$class: "GitSCM",
                          branches: [[name: "*/master"]],
-                         extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: '${APPPATH}']],
+                         extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: '${env.APPPATH}']],
                          userRemoteConfigs: [[credentialsId: "source:britzc-devops",
                                               url: "https://source.developers.google.com/p/britzc-devops/r/icedocode"]]]
 
@@ -87,7 +87,7 @@ spec:
             steps{
 
                 container('golang'){
-                    dir('${GOPATH}'){
+                    dir('${env.GOPATH}'){
                         script{
                             try{
                                 sh "go get github.com/nats-io/go-nats"
@@ -105,7 +105,7 @@ spec:
             steps{
 
                 container('golang'){
-                    dir('${APPPATH}'){
+                    dir('${env.APPPATH}'){
                         script{
                             try{
                                 sh "go test ./... -tags unit_test"
@@ -124,7 +124,7 @@ spec:
             steps{
 
                 container('golang'){
-                    dir('${APPPATH}'){
+                    dir('${env.APPPATH}'){
                         script{
                             try{
                                 sh "go test ./... -tags integration_test"
@@ -143,7 +143,7 @@ spec:
             steps{
 
                 container('golang'){
-                    dir('${APPPATH}'){
+                    dir('${env.APPPATH}'){
                         script{
                             try{
                                 sh "GOOS=linux go build -o icedoapp"
@@ -162,7 +162,9 @@ spec:
             steps {
 
                 container('gcloud') {
-                    sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${imageTag} ."
+                    dir('${env.APPPATH}'){
+                        sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${imageTag} ."
+                    }
                 }
 
             }
