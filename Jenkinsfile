@@ -1,5 +1,5 @@
 def project = 'britzc-devops'
-def appName = 'icedoapp'
+def appName = 'icedoapp-frontend'
 def feSvcName = "${appName}"
 def imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
 
