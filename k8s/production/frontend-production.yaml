@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: icedoapp-frontend-production
+spec:
+  replicas:
+  template:
+    metadata:
+      name: frontend
+      labels:
+        app: icedoapp
+        role: frontend
+        env: production
+    spec:
+      containers:
+      - name: frontend
+        image: gcr.io/cloud-solutions-images/icedoapp:1.0.0
+        resources:
+          limits:
+            memory: "500Mi"
+            cpu: "100m"
+        imagePullPolicy: Always
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+        ports:
+        - name: frontend
+          containerPort: 80
