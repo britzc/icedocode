@@ -5,11 +5,11 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-  - name: http
+  - name: traffic
     port: 8086
     targetPort: 8086
     protocol: TCP
-  - name: http
+  - name: ui
     port: 8083
     targetPort: 8083
     protocol: TCP
