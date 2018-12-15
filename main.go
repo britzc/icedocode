@@ -37,7 +37,7 @@ func main() {
 	})
 
 	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Version %s\n", version)
+		fmt.Fprintf(w, "Version %s\n", version)
 	})
 
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
