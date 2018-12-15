@@ -92,6 +92,7 @@ spec:
                         script{
                             try{
                                 sh "go get github.com/nats-io/go-nats"
+                                sh "go get golang.org/x/crypto/nacl/sign"
                             } catch (error){
                                 throw error
                             }
