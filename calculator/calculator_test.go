@@ -4,14 +4,15 @@ package calculator
 
 import (
 	"fmt"
+	"icedo/sandbox/domain"
 	"testing"
 )
 
 type MockDiscountAgent struct {
-	Params []*domain.DiscountParams
+	Params []*domain.DiscountParam
 }
 
-func (z *MockDiscountAgent) GetDiscountParams(productID int) (params []*domain.DiscountParams) {
+func (z *MockDiscountAgent) GetDiscountParams(productID int) (params []*domain.DiscountParam) {
 	return z.Params
 }
 

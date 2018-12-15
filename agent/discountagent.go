@@ -1,8 +1,10 @@
 package agent
 
 import (
-	""
+	"icedo/sandbox/domain"
+
 	nats "github.com/nats-io/go-nats"
+)
 
 func New() (discountAgent *DiscountAgent) {
 	nc, _ := nats.Connect(nats.DefaultURL)

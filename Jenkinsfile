@@ -71,7 +71,7 @@ spec:
                 container('golang'){
                     script{
                         try{
-                            sh "go test -tags unit_test"
+                            sh "go test ./... -tags unit_test"
                         } catch (error){
                             slackSend message:"${feSvcName} Unit testing failed ${env.BUILD_NUMBER}"
                             throw error
@@ -88,7 +88,7 @@ spec:
                 container('golang'){
                     script{
                         try{
-                            sh "go test -tags integration_test"
+                            sh "go test ./... -tags integration_test"
                         } catch (error){
                             slackSend message:"${feSvcName} Integration testing failed ${env.BUILD_NUMBER}"
                             throw error
