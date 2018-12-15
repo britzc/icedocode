@@ -5,9 +5,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"text/template"
 )
 
 const version string = "2.0.1"
+
+var (
+	tmpl = template.Must(template.ParseFiles("index.html"))
+)
+
+type PageData struct {
+	Version string
+}
 
 func main() {
 	var port int
@@ -19,9 +28,13 @@ func main() {
 	fmt.Printf("Version %s\n", version)
 	fmt.Printf("Port %d\n", port)
 
-	http.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "%s\n", version)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		data := &PageData{
+			Version: version,
+		}
+		tmpl.Execute(w, data)
 	})
+
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
