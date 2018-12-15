@@ -1,0 +1,27 @@
+
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: nats-service
+spec:
+  replicas:
+  template:
+    metadata:
+      name: service
+      labels:
+        app: nats
+        role: service
+        env: production
+    spec:
+      containers:
+      - name: nats
+        image: nats
+        resources:
+          limits:
+            memory: "100Mi"
+            cpu: "50m"
+        imagePullPolicy: Always
+        ports:
+        - name: service
+          containerPort: 4222
+
