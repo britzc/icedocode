@@ -50,7 +50,7 @@ spec:
 
         stage("Compile Binary") {
             steps{
-                slackSend message:"Build Started ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                slackSend message:"${feSvcName} Build started ${env.BUILD_NUMBER}"
 
                 container('golang'){
 
@@ -82,6 +82,8 @@ spec:
       // Canary branch
       when { branch 'canary' }
       steps {
+        slackSend message:"${feSvcName} canary deployment started"
+
         container('kubectl') {
           // Change deployed image in canary to the one we just built
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/canary/*.yaml")
@@ -89,12 +91,16 @@ spec:
           sh("kubectl --namespace=production apply -f k8s/canary/")
           sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
         } 
+
+        slackSend message:"${feSvcName} canary deployment completed"
       }
     }
     stage('Deploy Production') {
       // Production branch
       when { branch 'master' }
       steps{
+        slackSend message:"${feSvcName} production deployment started"
+
         container('kubectl') {
         // Change deployed image in canary to the one we just built
           sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/production/*.yaml")
@@ -102,6 +108,8 @@ spec:
           sh("kubectl --namespace=production apply -f k8s/production/")
           sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
         }
+
+        slackSend message:"${feSvcName} production deployment completed"
       }
     }
     stage('Deploy Dev') {
@@ -111,6 +119,8 @@ spec:
         not { branch 'canary' }
       } 
       steps {
+        slackSend message:"${feSvcName} ${env.BRANCH_NAME} deployment started"
+
         container('kubectl') {
           // Create namespace if it doesn't exist
           sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
@@ -122,6 +132,8 @@ spec:
           echo 'To access your environment run `kubectl proxy`'
           echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
         }
+
+        slackSend message:"${feSvcName} ${env.BRANCH_NAME} deployment completed"
       }     
     }
 
@@ -133,12 +145,14 @@ post {
             deleteDir()
     }
     success {
+        slackSend message:"${feSvcName} Build successful ${env.BUILD_NUMBER}"
         echo "I succeeeded!"
     }
     unstable {
         echo "I am unstable :/"
     }
     failure {
+        slackSend message:"${feSvcName} Build failed ${env.BUILD_NUMBER}"
         echo "I failed :("
     }
     changed {
