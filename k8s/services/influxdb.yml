@@ -16,11 +16,13 @@ spec:
       containers:
       - name: influxdb
         image: influxdb 
+        env:
+        - name: INFLUXDB_ADMIN_ENABLED
+          value: true
         resources:
           limits:
             memory: "500Mi"
             cpu: "100m"
-        args: ["-e INFLUXDB_ADMIN_ENABLED=true"]
         imagePullPolicy: Always
         ports:
         - name: http
