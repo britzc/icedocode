@@ -56,13 +56,11 @@ spec:
             steps{
                 container('golang'){
 
-                    dir("code"){
-                        script{
-                            try{
-                                sh "go test -tags=unit_test"
-                            } catch (error){
-                                throw error
-                            }
+                    script{
+                        try{
+                            sh "go test -tags=unit_test"
+                        } catch (error){
+                            throw error
                         }
                     }
 
@@ -75,18 +73,16 @@ spec:
             steps{
                 container('golang'){
 
-                    dir("code"){
                         script{
                             try{
                                 sh "GOOS=linux go build -o icedoapp"
-                                sh "mkdir -p /opt/app/shared/${env.BUILD_NUMBER}"
-                                sh "mv icedoapp /opt/app/shared/${env.BUILD_NUMBER}/."
-                                sh "mv Dockerfile /opt/app/shared/${env.BUILD_NUMBER}/."
+                                //sh "mkdir -p /opt/app/shared/${env.BUILD_NUMBER}"
+                                //sh "mv icedoapp /opt/app/shared/${env.BUILD_NUMBER}/."
+                                //sh "mv Dockerfile /opt/app/shared/${env.BUILD_NUMBER}/."
                             } catch (error){
                                 throw error
                             }
                         }
-                    }
 
                 }
             }
@@ -96,8 +92,8 @@ spec:
             steps {
                 container('gcloud') {
 
-                    sh "mv /opt/app/shared/${env.BUILD_NUMBER}/icedoapp ."
-                    sh "mv /opt/app/shared/${env.BUILD_NUMBER}/Dockerfile ."
+                    //sh "mv /opt/app/shared/${env.BUILD_NUMBER}/icedoapp ."
+                    //sh "mv /opt/app/shared/${env.BUILD_NUMBER}/Dockerfile ."
                     sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${imageTag} ."
 
                 }
