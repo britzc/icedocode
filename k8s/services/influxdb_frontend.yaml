@@ -9,6 +9,10 @@ spec:
     port: 8086
     targetPort: 8086
     protocol: TCP
+  - name: admin
+    port: 8083
+    targetPort: 8083
+    protocol: TCP
   selector:
     app: influxdb
     role: service

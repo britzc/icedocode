@@ -20,7 +20,10 @@ spec:
           limits:
             memory: "500Mi"
             cpu: "100m"
+        args: ["-e INFLUXDB_ADMIN_ENABLED=true"]
         imagePullPolicy: Always
         ports:
-        - name: service
+        - name: http
           containerPort: 8086
+        - name: admin
+          containerPort: 8083
