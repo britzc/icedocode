@@ -1,13 +1,19 @@
 package calculator
 
-type Product interface {
-	GetUnitPrice() (price float64)
+import "icedo/sandbox/domain"
+
+type DiscountAgent interface {
+	GetDiscountParams(productID int) (params []*domain.DiscountParam)
 }
 
-func GetDiscount(product Product, quantity int) (discount float64) {
-	if quantity < 10 {
-		return 0.0
+type Calculator struct {
+	da DiscountAgent
+}
+
+func New(da DiscountAgent) (calculator *Calculator) {
+	z := &Calculator{
+		da: da,
 	}
 
-	return product.GetUnitPrice() * 0.15 * float64(quantity)
+	return z
 }

@@ -1,27 +1,22 @@
+// +build unit_test
+
 package calculator
 
-import (
-	"fmt"
-	"testing"
-)
+import "testing"
 
-type MockProduct struct {
-	unitPrice float64
+type MockDiscountAgent struct {
+	Params []*domain.DiscountParams
 }
 
-func (z *MockProduct) GetUnitPrice() (price float64) {
-	return z.unitPrice
+func (z *MockDiscountAgent) GetDiscountParams(productID int) (params []*domain.DiscountParams) {
+	return z.Params
 }
 
-func Test_GetDiscount(t *testing.T) {
-	mp := &MockProduct{
-		unitPrice: 12.34,
+func Test_New(t *testing.T) {
+	mda := &MockDiscountAgent{}
+
+	actual := New(mda)
+	if actual == nil {
+		t.Errorf("crap")
 	}
-
-	quantity := 10
-	expected := 18.51
-
-	actual := GetDiscount(mp, quantity)
-	fmt.Printf("GetDiscount: Expected %f and got %f", expected, actual)
-
 }

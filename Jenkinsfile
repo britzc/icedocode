@@ -56,6 +56,7 @@ spec:
 
                         script{
                             try{
+                                sh "go get github.com/nats-io/go-nats"
                                 sh "GOOS=linux go build -o icedoapp"
                             } catch (error){
                                 throw error
