@@ -7,5 +7,5 @@ spec:
     memory: 2Gi
     cpu: 2
     pods: 6
-    services: 2
+    services: 4
     resourcequotas: 1
