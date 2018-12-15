@@ -75,7 +75,7 @@ spec:
                 checkout changelog: false,
                          poll: true,
                          scm: [$class: "GitSCM",
-                         branches: [[name: "*/master"]],
+                         branches: [[name: "*/${env.BRANCH_NAME}"]],
                          extensions: [[$class: "RelativeTargetDirectory", relativeTargetDir: "src/icedo/sandbox"]],
                          userRemoteConfigs: [[credentialsId: "source:britzc-devops",
                                               url: "https://source.developers.google.com/p/britzc-devops/r/icedocode"]]]
@@ -92,7 +92,6 @@ spec:
                         script{
                             try{
                                 sh "go get github.com/nats-io/go-nats"
-                                sh "go get golang.org/x/crypto/nacl/sign"
                             } catch (error){
                                 throw error
                             }
