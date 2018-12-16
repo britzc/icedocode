@@ -159,7 +159,7 @@ spec:
             }
         }
         
-        stage('Build and push image with Container Builder') {
+        stage('Publishing Docker Image') {
             steps {
 
                 container('gcloud') {
