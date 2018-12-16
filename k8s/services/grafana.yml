@@ -7,7 +7,6 @@ spec:
   replicas:
   template:
     metadata:
-      name: service
       labels:
         app: grafana
         role: service
