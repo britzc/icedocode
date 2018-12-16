@@ -7,7 +7,7 @@ spec:
   template:
     metadata:
       labels:
-        app: monitoring-influxdb
+        app: influxdb
         role: monitoring
     spec:
       containers:
