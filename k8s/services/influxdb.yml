@@ -1,16 +1,13 @@
-
-kind: Deployment
 apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
-  name: influxdb-service
+  name: monitoring-influxdb
 spec:
   replicas:
   template:
     metadata:
       labels:
-        app: influxdb
-        role: service
-        env: production
+        task: monitoring
     spec:
       containers:
       - name: influxdb
@@ -30,7 +27,6 @@ spec:
           limits:
             memory: "500Mi"
             cpu: "30m"
-        imagePullPolicy: Always
         ports:
         - name: http
           containerPort: 8086
@@ -42,3 +38,21 @@ spec:
       volumes:
       - name: influxdb-volume
         emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: monitoring-influxdb
+  labels:
+    task: monitoring
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 8086
+    targetPort: 8086
+    protocol: TCP
+  selector:
+    app: monitoring-influxdb
+
+
