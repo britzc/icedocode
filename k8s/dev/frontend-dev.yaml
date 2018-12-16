@@ -19,6 +19,9 @@ spec:
           limits:
             memory: "100Mi"
             cpu: "10m"
+        env:
+        - name: INFLUXDB_HOST
+          value: monitoring-influxdb
         imagePullPolicy: Always
         readinessProbe:
           httpGet:

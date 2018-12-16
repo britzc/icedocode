@@ -16,6 +16,9 @@ spec:
           limits:
             memory: "500Mi"
             cpu: "30m"
+        env:
+        - name: INFLUXDB_HOST
+          value: monitoring-influxdb
         ports:
         - name: service
           containerPort: 3000
