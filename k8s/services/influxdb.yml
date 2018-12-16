@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: monitoring-influxdb-deployment
+  name: monitoring-influxdb
 spec:
   replicas:
   template:
@@ -43,7 +43,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: monitoring-influxdb-service
+  name: monitoring-influxdb
   labels:
     role: monitoring
 spec:
