@@ -7,6 +7,7 @@ spec:
   template:
     metadata:
       labels:
+        app: grafana
         role: monitoring
     spec:
       containers:
@@ -43,5 +44,6 @@ spec:
     targetPort: 3000
     protocol: TCP
   selector:
-    app: grafana
+    app: monitoring-grafana
+    role: monitoring
 
