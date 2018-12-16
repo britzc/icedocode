@@ -1,12 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: monitoring-influxdb
+  name: monitoring-influxdb-deployment
 spec:
   replicas:
   template:
     metadata:
       labels:
+        app: influxdb
         role: monitoring
     spec:
       containers:
@@ -42,7 +43,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: monitoring-influxdb
+  name: monitoring-influxdb-service
   labels:
     role: monitoring
 spec:
