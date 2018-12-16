@@ -54,7 +54,7 @@ spec:
     targetPort: 8086
     protocol: TCP
   selector:
-    app: monitoring-influxdb
+    app: influxdb
     role: monitoring
 
 
