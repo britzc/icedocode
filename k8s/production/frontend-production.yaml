@@ -3,7 +3,7 @@ apiVersion: extensions/v1beta1
 metadata:
   name: icedoapp-frontend-production
 spec:
-  replicas: 4
+  replicas: 3
   template:
     metadata:
       name: frontend
