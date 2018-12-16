@@ -2,15 +2,14 @@
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  name: nats-service
+  name: comms-nats
 spec:
   replicas:
   template:
     metadata:
       labels:
         app: nats
-        role: service
-        env: production
+        role: comms
     spec:
       containers:
       - name: nats

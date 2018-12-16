@@ -7,7 +7,7 @@ spec:
   template:
     metadata:
       labels:
-        task: monitoring
+        role: monitoring
     spec:
       containers:
       - name: influxdb
@@ -44,7 +44,7 @@ kind: Service
 metadata:
   name: monitoring-influxdb
   labels:
-    task: monitoring
+    role: monitoring
 spec:
   type: LoadBalancer
   ports:
