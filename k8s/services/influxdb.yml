@@ -36,3 +36,9 @@ spec:
           containerPort: 8086
         - name: admin
           containerPort: 8083
+        volumeMounts:
+        - mountPath: /var/lib/influxdb
+          name: influxdb-volume
+      volumes:
+      - name: influxdb-volume
+        emptyDir: {}

@@ -23,3 +23,9 @@ spec:
         ports:
         - name: service
           containerPort: 3000
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name: grafana-volume
+      volumes:
+      - name: grafana-volume
+        emptyDir: {}
