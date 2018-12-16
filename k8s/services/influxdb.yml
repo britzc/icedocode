@@ -17,8 +17,16 @@ spec:
       - name: influxdb
         image: influxdb 
         env:
-        - name: INFLUXDB_ADMIN_ENABLED
-          value: "true"
+        - name: INFLUXDB_DB
+          value: "jenkins"
+        - name: INFLUXDB_ADMIN_USER
+          value: "admin"
+        - name: INFLUXDB_ADMIN_PASSWORD
+          value: "supersecretpassword"
+        - name: INFLUXDB_USER
+          value: "jenkins"
+        - name: INFLUXDB_USER_PASSWORD
+          value: "secretpassword"
         resources:
           limits:
             memory: "500Mi"
