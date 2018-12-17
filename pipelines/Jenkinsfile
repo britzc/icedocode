@@ -173,8 +173,7 @@ spec:
 
         stage('Deploy Prod') {
             when { 
-                branch 'canary'
-                branch 'master'
+                anyOf { branch 'canary'; branch 'master' }
             }
             steps {
 
