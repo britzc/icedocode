@@ -171,6 +171,17 @@ spec:
             }
         }
 
+        stage('Deploying Base') {
+            steps {
+
+                container('kubectl') {
+                    sh("kubectl --namespace=production apply -f k8s/quota/")
+                    sh("kubectl --namespace=production apply -f k8s/services/")
+                } 
+
+            }
+        }
+
         stage('Deploy Prod') {
             when { 
                 anyOf { branch 'canary'; branch 'master' }
@@ -183,8 +194,6 @@ spec:
                     dir("src/icedo/sandbox"){
                         sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/${env.BRANCH_NAME}/*.yaml")
 
-                        sh("kubectl --namespace=production apply -f k8s/quota/")
-                        sh("kubectl --namespace=production apply -f k8s/services/")
                         sh("kubectl --namespace=production apply -f k8s/${env.BRANCH_NAME}/")
 
                         sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
@@ -211,8 +220,6 @@ spec:
                         sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
                         sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#${imageTag}#' ./k8s/dev/*.yaml")
 
-                        sh("kubectl --namespace=production apply -f k8s/quota/")
-                        sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
                         sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
 
                         echo 'To access your environment run `kubectl proxy`'
