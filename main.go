@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"text/template"
 )
 
@@ -16,7 +17,9 @@ var (
 
 // PageData provides version details
 type PageData struct {
-	Version string
+	Version     string
+	NatsURL     string
+	InfluxDBURL string
 }
 
 func main() {
@@ -29,9 +32,14 @@ func main() {
 	fmt.Printf("Version %s\n", version)
 	fmt.Printf("Port %d\n", port)
 
+	natsURL := os.Getenv("NATS_HOST")
+	influxDBURL := os.Getenv("INFLUXDB_HOST")
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		data := &PageData{
-			Version: version,
+			Version:     version,
+			NatsURL:     natsURL,
+			InfluxDBURL: influxDBURL,
 		}
 		tmpl.Execute(w, data)
 	})

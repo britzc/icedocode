@@ -22,6 +22,8 @@ spec:
         env:
         - name: INFLUXDB_HOST
           value: monitoring-influxdb
+        - name: NATS_HOST
+          value: comms-nats
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
