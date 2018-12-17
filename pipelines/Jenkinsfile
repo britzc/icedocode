@@ -173,8 +173,8 @@ spec:
 
         stage('Deploy Dev') {
             when { 
-                { branch 'canary' }
-                { branch 'master' }
+                branch 'canary'
+                branch 'master'
             }
             steps {
 
