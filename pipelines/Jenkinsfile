@@ -1,3 +1,5 @@
+import groovy.time.TimeCategory
+
 def project = 'britzc-devops'
 def appName = 'icedoapp-frontend'
 def feSvcName = "${appName}"
@@ -124,7 +126,7 @@ spec:
                             def stopTime = new Date()
 
                             def dataMap = [:]
-                            dataMap["unit_test_duration"] = TimeCategory.minus(stopTime,startTime)
+                            dataMap["unit_test_duration"] = TimeCategory.minus(stopTime, startTime)
 
                             step([$class: 'InfluxDbPublisher', customData: dataMap, customDataMap: null, customPrefix: null, target: 'grafana'])
 
@@ -141,6 +143,8 @@ spec:
                 container('golang'){
                     dir("src/icedo/sandbox"){
                         script{
+                            def startTime = new Date()
+
                             try{
                                 sh "go test ./... -tags integration_test"
                             } catch (error){
@@ -148,8 +152,10 @@ spec:
                                 throw error
                             }
 
+                            def stopTime = new Date()
+
                             def dataMap = [:]
-                            dataMap["unit_test_duration"] = 100
+                            dataMap["unit_test_duration"] = TimeCategory.minus(stopTime, startTime) 
 
                             step([$class: 'InfluxDbPublisher', customData: dataMap, customDataMap: null, customPrefix: null, target: 'grafana'])
                         }
