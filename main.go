@@ -23,6 +23,7 @@ type PageData struct {
 	Version     string
 	NatsURL     string
 	InfluxDBURL string
+	Environment string
 }
 
 func main() {
@@ -35,6 +36,7 @@ func main() {
 	fmt.Printf("Version %s\n", version)
 	fmt.Printf("Port %d\n", port)
 
+	environment := os.Getenv("ENVIRONMENT")
 	natsURL := os.Getenv("NATS_HOST")
 	influxDBURL := os.Getenv("INFLUXDB_HOST")
 
@@ -48,6 +50,7 @@ func main() {
 			Version:     version,
 			NatsURL:     natsURL,
 			InfluxDBURL: influxDBURL,
+			Environment: environment,
 		}
 		tmpl.Execute(w, data)
 	})

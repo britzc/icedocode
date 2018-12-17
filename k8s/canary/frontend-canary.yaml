@@ -24,6 +24,8 @@ spec:
           value: monitoring-influxdb
         - name: NATS_HOST
           value: comms-nats
+        - name: ENVIRONMENT
+          value: canary
         imagePullPolicy: Always
         readinessProbe:
           httpGet:
