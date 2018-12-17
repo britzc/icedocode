@@ -171,19 +171,6 @@ spec:
             }
         }
 
-        stage('Deploying Base') {
-            steps {
-
-                container('kubectl') {
-                    dir("src/icedo/sandbox"){
-                        sh("kubectl --namespace=production apply -f k8s/quota/")
-                        sh("kubectl --namespace=production apply -f k8s/services/")
-                    }
-                } 
-
-            }
-        }
-
         stage('Deploy Prod') {
             when { 
                 anyOf { branch 'canary'; branch 'master' }
