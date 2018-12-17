@@ -175,8 +175,10 @@ spec:
             steps {
 
                 container('kubectl') {
-                    sh("kubectl --namespace=production apply -f k8s/quota/")
-                    sh("kubectl --namespace=production apply -f k8s/services/")
+                    dir("src/icedo/sandbox"){
+                        sh("kubectl --namespace=production apply -f k8s/quota/")
+                        sh("kubectl --namespace=production apply -f k8s/services/")
+                    }
                 } 
 
             }
