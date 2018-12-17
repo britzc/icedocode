@@ -112,7 +112,7 @@ spec:
                 container('golang'){
                     dir("src/icedo/sandbox"){
                         script{
-                            Date start = new Date()
+                            def startTime = new Date()
 
                             try{
                                 sh "go test ./... -tags unit_test"
@@ -121,10 +121,10 @@ spec:
                                 throw error
                             }
 
-                            Date stop = new Date()
+                            def stopTime = new Date()
 
                             def dataMap = [:]
-                            dataMap["unit_test_duration"] = TimeCategory.minus(stop,start)
+                            dataMap["unit_test_duration"] = TimeCategory.minus(stopTime,startTime)
 
                             step([$class: 'InfluxDbPublisher', customData: dataMap, customDataMap: null, customPrefix: null, target: 'grafana'])
 
