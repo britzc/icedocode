@@ -47,7 +47,7 @@ spec:
     }
 
     environment {
-        GOPATH = "/home/jenkins/workspace/${env.JOB_NAME}"
+        GOPATH = "/home/jenkins/workspace/${env.JOB_BASE_NAME}/&{env.BRANCH_NAME}"
         APPPATH = 'src/icedo/sandbox'
     }
 
