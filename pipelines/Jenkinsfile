@@ -230,6 +230,7 @@ spec:
     post {
         always {
             echo "One way or another, I have finished"
+            step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'grafana'])
         }
         success {
             slackSend message:"${feSvcName} Build successful ${env.BUILD_NUMBER}"
