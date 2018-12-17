@@ -94,6 +94,8 @@ spec:
                                 sh "pwd"
                                 sh "ls"
                                 sh "go get github.com/nats-io/go-nats"
+                                sh "go get github.com/influxdata/influxdb"
+                                sh "go get github.com/influxdata/platform"
                             } catch (error){
                                 throw error
                             }
