@@ -1,0 +1,85 @@
+def project = 'britzc-devops'
+def appName = 'icedoapp-frontend'
+def feSvcName = "${appName}"
+def imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+
+pipeline {
+    parameters {
+        string(name:"BRANCH", defaultValue:"", description:"branch being built")
+        string(name:"BUILD", defaultValue:"", description:"build number")
+    }
+
+    agent {
+        kubernetes {
+      label 'icedo-app'
+      defaultContainer 'jnlp'
+      yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  component: ci
+spec:
+  # Use service account that can deploy to all namespaces
+  serviceAccountName: cd-jenkins 
+  containers:
+  - name: kubectl
+    image: gcr.io/cloud-builders/kubectl
+    command:
+    - cat
+    tty: true
+  volumes:
+  - name: sharedvolume
+    emptyDir: {}
+"""
+        }
+    }
+
+    stages {
+        stage('Deploying') {
+            when { 
+                { ${params.BRANCH} 'canary' }
+                { ${params.BRANCH} 'master' }
+            }
+            steps {
+
+                slackSend message:"${feSvcName} ${params.BRANCH} deployment started"
+
+                container('kubectl') {
+                    dir("src/icedo/sandbox"){
+                        sh("sed -i.bak 's#gcr.io/cloud-solutions-images/icedoapp:1.0.0#gcr.io/${project}/${appName}:${params.BRANCH}.${params.BUILD}#' ./k8s/canary/*.yaml")
+
+                        sh("kubectl --namespace=production apply -f k8s/quota/")
+                        sh("kubectl --namespace=production apply -f k8s/services/")
+                        sh("kubectl --namespace=production apply -f k8s/${params.BRANCH}/")
+
+                        sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+                    }
+                } 
+
+                slackSend message:"${feSvcName} ${params.BRANCH} deployment completed"
+
+            }
+        }
+
+    }
+
+    post {
+        always {
+            echo "One way or another, I have finished"
+        }
+        success {
+            echo "I succeeeded!"
+        }
+        unstable {
+            echo "I am unstable :/"
+        }
+        failure {
+            slackSend message:"${feSvcName} Build failed ${params.BUILD}"
+            echo "I failed :("
+        }
+        changed {
+            echo "Things were different before..."
+        }
+    }
+}
