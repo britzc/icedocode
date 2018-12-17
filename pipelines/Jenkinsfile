@@ -118,14 +118,15 @@ spec:
                                 slackSend message:"${feSvcName} Unit testing failed ${env.BUILD_NUMBER}"
                                 throw error
                             }
+
+                            def dataMap = [:]
+                            testDataMap["unit_test_duration"] = 100
+
+                            step([$class: 'InfluxDbPublisher', customData: dataMap, target: 'grafana'])
+
                         }
                     }
                 }
-
-                def dataMap = [:]
-                testDataMap["unit_test_duration"] = 100
-
-                step([$class: 'InfluxDbPublisher', customData: dataMap, target: 'grafana'])
 
             }
         }
@@ -142,14 +143,14 @@ spec:
                                 slackSend message:"${feSvcName} Integration testing failed ${env.BUILD_NUMBER}"
                                 throw error
                             }
+
+                            def dataMap = [:]
+                            testDataMap["unit_test_duration"] = 100
+
+                            step([$class: 'InfluxDbPublisher', customData: dataMap, target: 'grafana'])
                         }
                     }
                 }
-
-                def dataMap = [:]
-                testDataMap["integration_test_duration"] = 100
-
-                step([$class: 'InfluxDbPublisher', customData: dataMap, target: 'grafana'])
 
             }
         }
