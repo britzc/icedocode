@@ -126,7 +126,7 @@ spec:
                             def stopTime = new Date()
 
                             def dataMap = [:]
-                            dataMap["unit_test_duration"] = TimeCategory.minus(stopTime, startTime)
+                            dataMap["unit_test_duration"] = TimeCategory.minus(stopTime, startTime).toMilliseconds()
 
                             step([$class: 'InfluxDbPublisher', customData: dataMap, customDataMap: null, customPrefix: null, target: 'grafana'])
 
@@ -155,7 +155,7 @@ spec:
                             def stopTime = new Date()
 
                             def dataMap = [:]
-                            dataMap["unit_test_duration"] = TimeCategory.minus(stopTime, startTime) 
+                            dataMap["integration_test_duration"] = TimeCategory.minus(stopTime, startTime).toMilliseconds() 
 
                             step([$class: 'InfluxDbPublisher', customData: dataMap, customDataMap: null, customPrefix: null, target: 'grafana'])
                         }
