@@ -122,6 +122,11 @@ spec:
                     }
                 }
 
+                def dataMap = [:]
+                testDataMap["unit_test_duration"] = 100
+
+                step([$class: 'InfluxDbPublisher', customData: dataMap, target: 'grafana'])
+
             }
         }
 
@@ -140,6 +145,11 @@ spec:
                         }
                     }
                 }
+
+                def dataMap = [:]
+                testDataMap["integration_test_duration"] = 100
+
+                step([$class: 'InfluxDbPublisher', customData: dataMap, target: 'grafana'])
 
             }
         }
@@ -229,7 +239,7 @@ spec:
     post {
         always {
             echo "One way or another, I have finished"
-            step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'grafana'])
+            step([$class: 'InfluxDbPublisher', target: 'grafana'])
         }
         success {
             slackSend message:"${feSvcName} Build successful ${env.BUILD_NUMBER}"
